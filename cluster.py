@@ -3,10 +3,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 def load_and_summarize_data(file_path):
-    # Load the data
     df = pd.read_csv(file_path)
     
-    # Data summary
     data_types = df.dtypes
     shape = df.shape
     description = df.describe()
@@ -16,7 +14,6 @@ def load_and_summarize_data(file_path):
     return df, data_types, shape, description, info, is_null
 
 def drop_missing_values(df):
-    # Drop missing values
     dropdf = df.dropna()
     return dropdf
 
@@ -33,7 +30,6 @@ def main():
     
     df, data_types, shape, description, info, is_null = load_and_summarize_data(file_path)
     
-    # Output data summary
     print(df)
     print(data_types)
     print(shape)
@@ -41,12 +37,10 @@ def main():
     print(info)
     print(is_null)
     
-    # Drop missing values
     dropdf = drop_missing_values(df)
     print("-----------")
     print(dropdf.shape)
 
-    # Additional analysis
     print(len(df) - len(dropdf))
     print(dropdf.isnull().sum())
     print(dropdf.head(4).to_string())
@@ -56,7 +50,6 @@ def main():
 
     print(dropdf.armed.value_counts())
     
-    # Analyze age distribution
     analyze_age_distribution(df)
 
 if __name__ == "__main__":
