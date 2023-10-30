@@ -1,42 +1,63 @@
 import pandas as pd
-# from matplotlib import pyplot as plt
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-file_path = 'washingtonpolice.csv'
+def load_and_summarize_data(file_path):
+    # Load the data
+    df = pd.read_csv(file_path)
+    
+    # Data summary
+    data_types = df.dtypes
+    shape = df.shape
+    description = df.describe()
+    info = df.info()
+    is_null = df.isnull().sum()
+    
+    return df, data_types, shape, description, info, is_null
 
-df = pd.read_csv(file_path)
-print(df)
+def drop_missing_values(df):
+    # Drop missing values
+    dropdf = df.dropna()
+    return dropdf
 
-data_types = df.dtypes
-print(data_types)
+def analyze_age_distribution(df):
+    # Plot age distribution
+    plt.figure(figsize=(12, 8))
+    plt.title('Age Distribution of Deaths', fontsize=15)
+    sns.distplot(df.age)
+    plt.tight_layout()
+    plt.show()
 
-print(type(df))
-print("-----------")
-print(df.shape)
+def main():
+    file_path = 'washingtonpolice.csv'
+    
+    df, data_types, shape, description, info, is_null = load_and_summarize_data(file_path)
+    
+    # Output data summary
+    print(df)
+    print(data_types)
+    print(shape)
+    print(description)
+    print(info)
+    print(is_null)
+    
+    # Drop missing values
+    dropdf = drop_missing_values(df)
+    print("-----------")
+    print(dropdf.shape)
 
-description = df.describe() 
-print(description)
+    # Additional analysis
+    print(len(df) - len(dropdf))
+    print(dropdf.isnull().sum())
+    print(dropdf.head(4).to_string())
 
-print(df.info())
+    print(dropdf.isna().sum())
+    print("-----------")
 
-print(df.isnull())
-print(df.isnull().sum())
-print("-----------")
-dropdf = df.dropna()
-print(dropdf.shape)
+    print(dropdf.armed.value_counts())
+    
+    # Analyze age distribution
+    analyze_age_distribution(df)
 
-print(8770-6810)
-print(dropdf.isnull().sum())
-print(dropdf.head(4).to_string())
-
-print(dropdf.isna().sum())
-print("-----------")
-
-print(dropdf.armed.value_counts())
-
-plt.figure(figsize=(12, 8))
-plt.title('Age Distribution of Deaths', fontsize=15)
-sns.distplot(dropdf.age)
-plt.tight_layout()
-plt.show()
+if __name__ == "__main__":
+    main()
